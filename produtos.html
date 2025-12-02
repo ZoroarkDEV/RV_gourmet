@@ -1,0 +1,151 @@
+
+<?php
+// Página de Produtos - RV Confeitaria Artesanal
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossos Produtos - RV Confeitaria Artesanal</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            background-color: #0d0d0d;
+            color: #fff;
+        }
+        header {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background-color: #0d0d0d;
+        }
+        nav a {
+            color: #d4af37;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .logo img {
+            width: 150px;
+        }
+        h1 {
+            text-align: center;
+            color: #d4af37;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+        
+.produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px 40px;
+    justify-items: center;
+    flex-wrap: wrap;
+    
+}
+
+.produto {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza imagem e texto */
+    text-align: center;
+}
+
+      
+.produto img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #d4af37;
+    margin-bottom: 10px;
+}
+
+        .produto p {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #d4af37;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+           <a href="rv.html">HOME</a>
+           <a href="produtos.html">PRODUTOS</a>
+            <a href="Sobre.html">SOBRE</a>
+            <a href="Contato.html">CONTATO</a>
+        </nav>
+    </header>
+
+    <div class="logo">
+    <img src="assests/img/logo_rv.jpg">
+    </div>
+
+    <h1>Nossos Produtos</h1>
+
+    <section class="produtos">
+        <div class="produto">
+            <a href="Pedido.html">
+                <img src="assests/img/bolo.jpg" bolo2.jpg>
+            </a>
+            <p>Bolo Tradicional</p>
+        </div>
+        <div class="produto">
+          <a href="Pedido.html">
+            <img src="assests/img/bolodefesta.jpg" Brigadeiro.jpg>
+          </a>
+            <p>Bolo De Festa</p>
+        </div>
+        <div class="produto">
+            <a href="Pedido.html">
+                <img src="assests/img/bolonakedcake.jpg" >
+            </a>
+            
+            <p>Nake d Cake</p>
+        </div>
+        <div class="produto">
+            <a href="Pedido.html">
+                 <img src="assests/img/brigadeiro.jpg" >
+                 </a>
+            <p> Brigadeiro Gourmet </p>
+        </div>
+
+         <div class="produto">
+            <a href="Pedido.html">
+                 <img src="assests/img/sobremesa.jpg">
+            </a> 
+            <p> Sobremesas </p>
+        </div>
+         <div class="produto">
+            <a href="Pedido.html">
+            <img src="assests/img/ovodepascoa.jpg"> 
+            </a>
+            <p> Ovo De Páscoa </p>
+        </div>
+         <div class="produto">
+            <a href="Pedido.html">
+                <img src="assests/img/cesta.jpg">
+            </a>
+            <p> Cestas </p>
+        </div>
+
+         <div class="produto">
+            <a href="Pedido.html">
+                 <img src="assests/img/Doce.jpg">
+            </a> 
+            <p> Doces Diversos </p>
+        </div>
+         
+      
+    </section>
+</body>
+</html>

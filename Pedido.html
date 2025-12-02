@@ -1,0 +1,265 @@
+
+<?php
+// PROCESSAMENTO: Enviar para WhatsApp quando o formulário for submetido
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Dados básicos
+    $nome        = htmlspecialchars($_POST['nome'] ?? '');
+    $telefone    = htmlspecialchars($_POST['telefone'] ?? '');
+    $email       = htmlspecialchars($_POST['email'] ?? '');
+    $produto     = htmlspecialchars($_POST['produto'] ?? '');
+    $observacoes = htmlspecialchars($_POST['observacoes'] ?? '');
+
+    // Campos de bolo
+    $sabor_bolo   = htmlspecialchars($_POST['sabor_bolo'] ?? '');
+    $tamanho_bolo = htmlspecialchars($_POST['tamanho_bolo'] ?? '');
+    $decoracao    = htmlspecialchars($_POST['decoracao'] ?? '');
+    $pagamento    = htmlspecialchars($_POST['pagamento'] ?? '');
+
+    // Campos de brigadeiro
+    $tipo_brigadeiro   = htmlspecialchars($_POST['tipo_brigadeiro'] ?? '');   // Tradicionais/Recheados
+    $sabor_brigadeiro  = htmlspecialchars($_POST['sabor_brigadeiro'] ?? '');
+    $quantidade_centos = htmlspecialchars($_POST['quantidade_centos'] ?? ''); // nº de "centos"
+    $embalagem         = htmlspecialchars($_POST['embalagem'] ?? '');         // padrão/diferenciada
+
+    // Montar mensagem conforme produto
+    $mensagem  = "Novo Pedido - RV Confeitaria Artesanal\n";
+    $mensagem .= "Cliente: $nome\n";
+    $mensagem .= "Telefone: $telefone\n";
+    $mensagem .= "E-mail: $email\n";
+    $mensagem .= "Produto: $produto\n\n";
+
+    if ($produto === 'Brigadeiros') {
+        $preco = ($tipo_brigadeiro === 'Tradicionais')
+            ? 'R$ 140,00 / cento'
+            : 'R$ 180,00 / cento';
+
+        $mensagem .= "Tipo (Tabela): $tipo_brigadeiro ($preco)\n";
+        $mensagem .= "Sabor: $sabor_brigadeiro\n";
+        $mensagem .= "Quantidade: $quantidade_centos cento(s)\n";
+        $mensagem .= "Embalagem: $embalagem\n";
+        $mensagem .= "*Valores adicionais sob consulta para embalagens diferenciadas.*\n\n";
+    } else {
+        // Produto bolo
+        $mensagem .= "Sabor do Bolo: $sabor_bolo\n";
+        $mensagem .= "Tamanho/Preço: $tamanho_bolo\n";
+        $mensagem .= "Decoração: $decoracao\n";
+        $mensagem .= "Forma de Pagamento: $pagamento\n\n";
+        $mensagem .= "Obs: Pagamento de 50% na confirmação do pedido.\n\n";
+    }
+
+    $mensagem .= "Observações do cliente: $observacoes\n";
+    $mensagem .= "\nGerente: RV Confeitaria Artesanal\n";
+
+    // Número do gerente (DDD + número, sem +, (), traços ou espaços)
+    $numeroGerente = "5511999999999"; // <-- ALTERE AQUI
+
+    // Redirecionar para WhatsApp
+    $url = "https://wa.me/$numeroGerente?text=" . urlencode($mensagem);
+    header("Location: $url");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedido - RV Confeitaria Artesanal</title>
+<style>
+    :root{
+        --preto:#0d0d0d; --ouro:#d4af37; --preto2:#1a1a1a; --texto:#ffffff;
+    }
+    body{margin:0; font-family: Georgia, serif; background:var(--preto); color:var(--texto); padding:24px;}
+    h1{text-align:center; color:var(--ouro); margin-bottom:18px;}
+    form{max-width:860px; margin:0 auto; background:var(--preto2); padding:24px; border-radius:10px; box-shadow:0 0 0 1px rgba(212,175,55,.2);}
+    fieldset{border:1px solid var(--ouro); border-radius:8px; margin-bottom:18px; padding:16px;}
+    legend{color:var(--ouro); font-weight:bold; padding:0 8px;}
+    label{display:block; margin:10px 0 6px; color:var(--ouro);}
+    input, select, textarea{
+        width:100%; padding:10px; border-radius:6px; border:none; background:#111; color:#eee; outline:none;
+        box-shadow: inset 0 0 0 1px rgba(212,175,55,.2);
+    }
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+    .hidden{display:none;}
+    button{width:100%; background:var(--ouro); color:var(--preto); border:none; padding:14px; font-size:16px; border-radius:8px; cursor:pointer;}
+    button:hover{background:#bfa233;}
+    footer{text-align:center; margin-top:18px; color:#ccc;}
+    .hint{font-size:12px; color:#bbb;}
+</style>
+</head>
+<body>
+    <h1>Faça seu Pedido</h1>
+
+    <form method="POST" id="formPedido">
+        <!-- Dados do Cliente -->
+        <fieldset>
+            <legend>Dados do Cliente</legend>
+            <div class="grid-2">
+                <div>
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div>
+                    <label for="telefone">Telefone (WhatsApp)</label>
+                    <input type="tel" id="telefone" name="telefone" required>
+                </div>
+            </div>
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" required>
+        </fieldset>
+
+        <!-- Seleção de Produto -->
+        <fieldset>
+            <legend>Produto</legend>
+            <label for="produto">Escolha o produto</label>
+            <select id="produto" name="produto" required>
+                <option value="Bolo Tradicional">Bolo Tradicional</option>
+                <option value="Bolo de Festa">Bolo de Festa</option>
+                <option value="Naked Cake">Naked Cake</option>
+                <option value="Brigadeiros">Brigadeiros</option>
+                <option value="Doces Diversos">Doces Diversos</option>
+            </select>
+        </fieldset>
+
+        <!-- BLOCO DE BOLO -->
+        <fieldset id="blocoBolo">
+            <legend>Detalhes do Bolo</legend>
+            <div class="grid-3">
+                <div>
+                    <label for="sabor_bolo">Sabor do Bolo</label>
+                    <select id="sabor_bolo" name="sabor_bolo">
+                        <option value="Brigadeiro">Brigadeiro</option>
+                        <option value="Prestígio">Prestígio</option>
+                        <option value="Ninho com Morango">Ninho com Morango</option>
+                        <option value="Doce de Leite">Doce de Leite</option>
+                        <option value="Kinder Bueno">Kinder Bueno</option>
+                        <option value="Dois Amores">Dois Amores</option>
+                        <option value="Maracujá">Maracujá</option>
+                        <option value="Brigadeiro Branco com Morango">Brigadeiro Branco com Morango</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="tamanho_bolo">Tamanho e Preço</label>
+                    <select id="tamanho_bolo" name="tamanho_bolo">
+                        <option value="20cm - 30 fatias - R$240,00">20cm - 30 fatias - R$240,00</option>
+                        <option value="15cm - 20 fatias - R$160,00">15cm - 20 fatias - R$160,00</option>
+                        <option value="11cm - 8 fatias - R$80,00">11cm - 8 fatias - R$80,00</option>
+                        <option value="8cm - individual - R$48,00">8cm - individual - R$48,00</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="decoracao">Decoração</label>
+                    <select id="decoracao" name="decoracao">
+                        <option value="Flores">Flores</option>
+                        <option value="Frutas">Frutas</option>
+                        <option value="Topper">Topper</option>
+                        <option value="Glitter">Glitter</option>
+                    </select>
+                </div>
+            </div>
+            <p class="hint">*Valores adicionais sob consulta para decorações especiais.</p>
+            <label for="pagamento">Forma de Pagamento</label>
+            <select id="pagamento" name="pagamento">
+                <option value="Pix">Pix</option>
+                <option value="Transferência">Transferência</option>
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
+            </select>
+            <p class="hint">Pagamento de 50% na confirmação do pedido.</p>
+        </fieldset>
+
+        <!-- BLOCO DE BRIGADEIROS -->
+        <fieldset id="blocoBrigadeiro" class="hidden">
+            <legend>Detalhes de Brigadeiros</legend>
+
+            <label for="tipo_brigadeiro">Tabela / Tipo</label>
+            <select id="tipo_brigadeiro" name="tipo_brigadeiro">
+                <option value="Tradicionais">Tradicionais – R$ 140,00 / cento</option>
+                <option value="Recheados">Recheados – R$ 180,00 / cento</option>
+            </select>
+
+            <label for="sabor_brigadeiro">Sabor</label>
+            <select id="sabor_brigadeiro" name="sabor_brigadeiro">
+                <!-- Tradicionais -->
+                <optgroup label="Tradicionais (R$ 140,00 / cento)">
+                    <option value="Brigadeiro">Brigadeiro</option>
+                    <option value="Beijinho">Beijinho</option>
+                    <option value="Bicho de pé">Bicho de pé</option>
+                </optgroup>
+                <!-- Recheados -->
+                <optgroup label="Recheados (R$ 180,00 / cento)">
+                    <option value="Brigadeiro gourmet c/ Cacau">Brigadeiro gourmet c/ Cacau</option>
+                    <option value="Beijinho c/ Damasco">Beijinho c/ Damasco</option>
+                    <option value="Churros">Churros</option>
+                    <option value="Ninho c/ Nutella">Ninho c/ Nutella</option>
+                    <option value="Surpresa de Uva">Surpresa de Uva</option>
+                </optgroup>
+            </select>
+
+            <div class="grid-2">
+                <div>
+                    <label for="quantidade_centos">Quantidade (em centos)</label>
+                    <input type="number" id="quantidade_centos" name="quantidade_centos" min="1" step="1" placeholder="Ex.: 2" />
+                </div>
+                <div>
+                    <label for="embalagem">Embalagem</label>
+                    <select id="embalagem" name="embalagem">
+                        <option value="Padrão">Padrão</option>
+                        <option value="Diferenciada">Diferenciada</option>
+                    </select>
+                    <p class="hint">*Valores adicionais sob consulta para embalagens diferenciadas.</p>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Observações -->
+        <fieldset>
+            <legend>Observações</legend>
+            <textarea id="observacoes" name="observacoes" rows="4" placeholder="Detalhes do pedido, alergias, data de retirada/entrega etc."></textarea>
+        </fieldset>
+
+        <button type="submit">Enviar Pedido pelo WhatsApp</button>
+    </form>
+
+    <footer>
+        <p>Gerente: RV Confeitaria Artesanal · WhatsApp: (11) 99999-9999 · São Paulo/SP</p>
+        <p>&copy; <?= date('Y'); ?> RV Confeitaria Artesanal</p>
+    </footer>
+
+<script>
+// Alterna blocos conforme produto
+const produtoSel = document.getElementById('produto');
+const blocoBolo = document.getElementById('blocoBolo');
+const blocoBrigadeiro = document.getElementById('blocoBrigadeiro');
+
+function alternarBlocos(){
+    if (produtoSel.value === 'Brigadeiros') {
+        blocoBrigadeiro.classList.remove('hidden');
+        blocoBolo.classList.add('hidden');
+        // remover 'required' dos campos de bolo
+        document.getElementById('sabor_bolo').removeAttribute('required');
+        document.getElementById('tamanho_bolo').removeAttribute('required');
+        document.getElementById('decoracao').removeAttribute('required');
+        document.getElementById('pagamento').removeAttribute('required');
+        // opcional: exigir alguns campos de brigadeiro
+        document.getElementById('tipo_brigadeiro').setAttribute('required','required');
+        document.getElementById('sabor_brigadeiro').setAttribute('required','required');
+    } else {
+        blocoBrigadeiro.classList.add('hidden');
+        blocoBolo.classList.remove('hidden');
+        // exigir campos de bolo
+        document.getElementById('sabor_bolo').setAttribute('required','required');
+        document.getElementById('tamanho_bolo').setAttribute('required','required');
+        document.getElementById('decoracao').setAttribute('required','required');
+        document.getElementById('pagamento').setAttribute('required','required');
+        // remover required de brigadeiro
+        document.getElementById('tipo_brigadeiro').removeAttribute('required');
+        document.getElementById('sabor_brigadeiro').removeAttribute('required');
+    }
+}
+produtoSel.addEventListener('change', alternarBlocos);
+alternarBlocos(); // inicial
+</script>
+</body>
+</html>

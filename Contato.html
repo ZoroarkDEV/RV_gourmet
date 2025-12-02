@@ -1,0 +1,136 @@
+
+<?php
+// Página de Contato - RV Confeitaria Artesanal
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - RV Confeitaria Artesanal</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            background-color: #0d0d0d;
+            color: #fff;
+        }
+        header {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background-color: #0d0d0d;
+        }
+        nav a {
+            color: #d4af37;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .logo img {
+            width: 150px;
+        }
+        h1 {
+            text-align: center;
+            color: #d4af37;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .contato-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        .info-contato {
+            max-width: 400px;
+            font-size: 18px;
+            line-height: 2;
+        }
+        .info-contato a {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .formulario {
+            max-width: 400px;
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #d4af37;
+        }
+        .formulario input, .formulario textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #d4af37;
+            background-color: #0d0d0d;
+            color: #fff;
+            font-size: 16px;
+        }
+        .formulario button {
+            width: 100%;
+            padding: 12px;
+            background-color: #d4af37;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #0d0d0d;
+            color: #d4af37;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="rv.html">HOME</a>
+            <a href="produtos.html">PRODUTOS</a>
+            <a href="Sobre.html">SOBRE</a>
+            <a href="Contato.html">CONTATO</a>
+            
+        </nav>
+    </header>
+
+    <div class="logo">
+        logo.png
+    </div>
+
+    <h1>Entre em Contato</h1>
+
+    <div class="contato-container">
+        <div class="info-contato">
+            <p>📞 Telefone: (11) 94605-8112</p>
+            <p>💬 WhatsApp: https://wa.me/5511946058112Clique aqui</a></p>
+            <p>📷 Instagram: <a href="nstagram.com/arvconfeitariaartesanal@arvconfeitariaartesanal</a></p>
+            <p>📧 E-mail: contato@rvconfeitariasanal.com</p>
+        </div>
+
+        <div class="formulario">
+            <form method="POST" action="">
+                <input type="text" name="nome" placeholder="Seu Nome" required>
+                <input type="email" name="email" placeholder="Seu E-mail" required>
+                <textarea name="mensagem" rows="5" placeholder="Sua Mensagem" required></textarea>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        Contato: (11)94605-8112 | Instagram: @rvconfeitariaartesanal
+    </footer>
+</body>
+</html>
